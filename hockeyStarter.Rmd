@@ -1,0 +1,19 @@
+---
+title: "2021 Hockey"
+author: "Nicholas Jacob"
+date: "1/20/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+data = read.csv('https://raw.githubusercontent.com/nurfnick/RTest/main/hockey.csv')
+```
+
+## Hockey Rules
+
+I am testing
+
+```{r}
+head(data)
+```
