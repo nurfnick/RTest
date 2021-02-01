@@ -1,0 +1,19 @@
+---
+title: "2021 Hockey Regression"
+author: "Nicholas Jacob"
+date: "2/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+data = read.csv('https://raw.githubusercontent.com/nurfnick/RTest/main/hockey.csv')
+```
+
+Say something continuing link to previous part <https://rpubs.com/nurfnick/715604>
+
+Now I can **knit**
+
+```{r}
+lm(W ~ PTS, data = data)
+```

@@ -80,35 +80,8 @@ t.test(lesspp$W,morepp$W)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ```{r}
 t.test(data$GP, mu = 4)
 ```
 
-```{r}
-!(data$PPO > data$PPOA)
-```
+The next part of the project can be found here <https://rpubs.com/nurfnick/720194>
