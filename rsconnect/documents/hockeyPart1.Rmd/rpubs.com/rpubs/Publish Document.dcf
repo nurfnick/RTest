@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/720194/c115600cf10049c98a78507ba68dfbcf
+bundleId: https://api.rpubs.com/api/v1/document/720194/c115600cf10049c98a78507ba68dfbcf
+url: http://rpubs.com/nurfnick/720194
+when: 1612306028.20181

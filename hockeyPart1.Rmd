@@ -15,5 +15,102 @@ Say something continuing link to previous part <https://rpubs.com/nurfnick/71560
 Now I can **knit**
 
 ```{r}
-lm(W ~ PTS, data = data)
+model = lm(W ~ PTS, data = data)
+```
+```{r}
+summary(model)
+```
+
+```{r}
+plot(model)
+```
+```{r}
+predict(model)
+```
+
+```{r}
+ylist = c(6,10,11,15)
+point <- data.frame(PTS = ylist)
+predict(model, point, interval = 'prediction')
+```
+```{r}
+residuals(model)
+3-2.806630
+```
+```{r}
+hist(residuals(model))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+plot(data$PTS,data$W)
+abline(model)
+```
+
+```{r}
+cor(data$PTS,data$W, use = "complete.obs")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+cor.test(data$PTS,data$W, use = "complete.obs")
+```
+```{r}
+data[which((data$PPO > data$PPOA)),"GP"]
+
+```
+
+```{r}
+data[which((data$PPO > data$PPOA)),"MPPThanKills"] = TRUE
+data[which(!(data$PPO > data$PPOA)),"MPPThanKills"] = FALSE
+```
+
+```{r}
+data$MPPThanKills
+```
+
+```{r}
+fit <- lm(W ~ PTS + MPPThanKills, data)
+fit
+```
+```{r}
+summary(fit)
+```
+```{r}
+y <- data.frame(PTS = 10, MPPThanKills = TRUE)
+predict(fit, y)
+```
+
+```{r}
+plot(data$PTS,data$W)
+abline(fit, col = "Red")
+abline(model, col = "Blue")
 ```
