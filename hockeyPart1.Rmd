@@ -114,3 +114,14 @@ plot(data$PTS,data$W)
 abline(fit, col = "Red")
 abline(model, col = "Blue")
 ```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = data, aes(x = PTS, y = W, color = MPPThanKills)) +
+  geom_jitter() +
+  geom_smooth(method="lm")
+  
+
+
+```
