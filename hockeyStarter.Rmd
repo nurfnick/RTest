@@ -2,9 +2,7 @@
 title: "2021 Hockey"
 author: "Nicholas Jacob"
 date: "1/20/2021"
-output:
-  html_document: default
-  pdf_document: default
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
