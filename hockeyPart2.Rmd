@@ -1,0 +1,42 @@
+---
+title: "Hockey Bootstrap and Cross Validation"
+author: "Nicholas Jacob"
+date: "2/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+data = read.csv('https://raw.githubusercontent.com/nurfnick/RTest/main/hockey.csv')
+library(boot)
+```
+
+This is a continuation of this project <<https://rpubs.com/nurfnick/720194>
+
+## Bootstrapping
+
+```{r bootFullMean}
+set.seed(43)
+samp_mean <- function(x, i) {
+  mean(x[i])
+}
+
+
+GP <- na.omit(data$GP) 
+results <- boot(GP, samp_mean, 100)
+plot(results)
+```
+
+```{r}
+boot.ci(results, type="perc")
+```
+```{r}
+t.test(GP, mu = 4)
+```
+START HERE>>>>
+
+```{r}
+results$t
+
+results$t0
+```
