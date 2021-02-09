@@ -56,6 +56,12 @@ t = (3.5-results$t0)/SE
 ```{r}
 mean(3.5<=results$t)
 ```
+%%%%Start Here
+
+```{r}
+data
+
+```
 
 ```{r}
 
