@@ -56,7 +56,6 @@ t = (3.5-results$t0)/SE
 ```{r}
 mean(3.5<=results$t)
 ```
-%%%%Start Here
 
 ```{r}
 data
@@ -92,4 +91,58 @@ boot.ci(results2, type = "perc")
 
 ```{r}
 mean(0 == results2$t)
+```
+%%%%Start Here
+
+## Cross Validation
+
+```{r}
+library(caret)
+data$W[is.na(data$W)] <- 0
+data$PTS[is.na(data$PTS)] <- 0
+
+trainingSamples <- createDataPartition(data$Rk ,p=.66,list = FALSE)
+trainingSamples
+```
+
+```{r}
+trainData <- data[trainingSamples,]
+testData <- data[-trainingSamples,]
+testData
+```
+
+```{r}
+model <- lm(W ~ PTS , data = trainData)
+summary(model)
+```
+
+
+
+```{r}
+data[trainingSamples,'Test_Train'] <- "Train"
+data[-trainingSamples,'Test_Train'] <- "Test"
+data$Test_Train
+```
+
+```{r}
+col.rainbow <- rainbow(2)
+palette(col.rainbow)
+plot(data$PTS,data$W,pch =19,col = as.factor(data$Test_Train))
+abline(model)
+```
+
+```{r}
+library(ggplot2)
+ggplot(data = data, mapping = aes(PTS,W,color = Test_Train))+
+  geom_jitter() +
+  geom_smooth(method = lm)
+```
+
+```{r}
+pre <- predict(model,data[-trainingSamples,])
+pre
+```
+
+```{r}
+R2(pre,data[-trainingSamples,"W"]  )
 ```
