@@ -34,9 +34,56 @@ boot.ci(results, type="perc")
 t.test(GP, mu = 4)
 ```
 START HERE>>>>
+$$
+t = \frac{\mu-\overline x}{SE}
+$$
+```{r}
+results$t0
+```
+
 
 ```{r}
-results$t
+SE = sd(results$t)
+c(results$t0-2*SE,results$t0+2*SE)
+```
 
-results$t0
+```{r}
+t = (3.5-results$t0)/SE
+
+1-pt(t,99)
+```
+
+```{r}
+mean(3.5<=results$t)
+```
+
+```{r}
+
+
+data$GP[is.na(data$GP)] <- 0
+
+data$GP
+```
+
+```{r}
+samp_min <- function(x, i) {
+  min(x[i])
+}
+
+results2 <- boot(data$GP,samp_min, R = 10000)
+plot(results2)
+```
+
+```{r}
+xbar = mean(results2$t)
+s = sd(results2$t)
+c(xbar - 2*s,xbar + 2*s)
+```
+
+```{r}
+boot.ci(results2, type = "perc")
+```
+
+```{r}
+mean(0 == results2$t)
 ```
