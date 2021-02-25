@@ -146,3 +146,19 @@ pre
 ```{r}
 R2(pre,data[-trainingSamples,"W"]  )
 ```
+%%%Start Here
+
+
+```{r}
+train.control <- trainControl(method = "cv", number = 10)
+model <- train(W ~ PTS, data = data, 
+               method = "lm",
+               trControl = train.control)
+# Summarize the results
+print(model)
+```
+
+```{r}
+summary(model)
+```
+

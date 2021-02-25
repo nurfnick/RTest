@@ -1,0 +1,95 @@
+---
+title: "2021 Hockey Contingency Tables"
+author: "Nicholas Jacob"
+date: "2/25/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+data = read.csv('https://raw.githubusercontent.com/nurfnick/RTest/main/hockey.csv')
+
+```
+
+# Contingency Tables and Tests For Independance
+```{r}
+data
+```
+This is a continuation of this project <<https://rpubs.com/nurfnick/720194>
+
+This portion of the project is all about categorical variables.  Let's remind ourselves of what categorical variables we have.  I had created one about who had more powerplays, so I'll copy/pasta that code here
+```{r}
+data$PPO[is.na(data$PPO)] <- 0
+data$PPOA[is.na(data$PPOA)] <- 0
+data[which(data$PPO <= data$PPOA),"PowerPlays"] = "Less"
+data[which(data$PPO > data$PPOA),"PowerPlays"] = "More"
+```
+
+```{r}
+table(data$PowerPlays)
+```
+Let's add an indicator for Canadian teams too
+```{r}
+data[which(data$X %in% c("Toronto Maple Leafs","Montreal Canadiens","Calgary Flames","Winnipeg Jets" ,"Ottawa Senators","Edmonton Oilers")),"Canadian"] = TRUE
+data[which(!(data$X %in% c("Toronto Maple Leafs","Montreal Canadiens","Calgary Flames","Winnipeg Jets" ,"Ottawa Senators","Edmonton Oilers"))),"Canadian"] = FALSE
+table(data$PowerPlays,data$Canadian)
+```
+
+
+## Test For Independance
+
+
+
+```{r}
+test = chisq.test(table(data$PowerPlays), p = c(1,1)/2)
+test
+```
+```{r}
+test$expected
+```
+
+```{r}
+barplot(table(data$PowerPlays))
+```
+## Contingency Table Test
+
+```{r}
+test2 = chisq.test(table(data$PowerPlays,data$Canadian))
+test2
+```
+
+```{r}
+test2$expected
+```
+
+```{r}
+mosaicplot(table(data$PowerPlays,data$Canadian))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
