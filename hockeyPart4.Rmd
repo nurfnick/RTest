@@ -1,0 +1,89 @@
+---
+title: "2021 Hockey ANOVA"
+author: "Nicholas Jacob"
+date: "3/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+data = read.csv('https://raw.githubusercontent.com/nurfnick/RTest/main/hockey.csv')
+
+```
+
+# ANOVA
+
+```{r}
+data
+```
+This is a continuation of this project <https://rpubs.com/nurfnick/730831>
+
+ANOVA is all about comparing multiple means (more than two!)  To do this I am going to look at my favorite statistic about who has more Power Plays buy add a third criteria, Equal!
+```{r}
+data$PPO[is.na(data$PPO)] <- 0
+data$PPOA[is.na(data$PPOA)] <- 0
+data[which(data$PPO < data$PPOA),"PowerPlays"] = "Less"
+data[which(data$PPO > data$PPOA),"PowerPlays"] = "More"
+data[which(data$PPO == data$PPOA),"PowerPlays"] = "Equal"
+```
+
+```{r}
+table(data$PowerPlays)
+```
+Let's add an indicator for Canadian teams too
+```{r}
+data[which(data$X %in% c("Toronto Maple Leafs","Montreal Canadiens","Calgary Flames","Winnipeg Jets" ,"Ottawa Senators","Edmonton Oilers")),"Canadian"] = TRUE
+data[which(!(data$X %in% c("Toronto Maple Leafs","Montreal Canadiens","Calgary Flames","Winnipeg Jets" ,"Ottawa Senators","Edmonton Oilers"))),"Canadian"] = FALSE
+table(data$PowerPlays,data$Canadian)
+```
+
+
+## One Way ANOVA
+
+
+
+```{r}
+model = aov(PTS ~ PowerPlays, data = data)
+summary(model)
+```
+```{r}
+
+plot(model,1)
+```
+```{r}
+
+plot(model,2)
+```
+
+```{r}
+y1 <-  mean(data$PTS, na.rm = TRUE)
+ggplot(data = data, aes(x = PowerPlays, y = PTS))+
+  geom_jitter(color = 'grey',width = 0.1, height = 0.1) +
+  stat_summary(fun.data = 'mean_se', color = "red") +
+  geom_hline(yintercept = y1,  color = "blue",linetype = "dashed")
+```
+
+## Two Way ANOVA
+
+```{r}
+model = aov(PTS ~ PowerPlays*Canadian, data = data)
+summary(model)
+```
+
+
+```{r}
+y1 <-  mean(data$PTS, na.rm = TRUE)
+ggplot(data = data, aes(x = PowerPlays, y = PTS, color = Canadian))+
+  geom_jitter(width = 0.1, height = 0.1) +
+  stat_summary(fun.data = 'mean_se') 
+```
+```{r}
+ggplot(data = data, aes(x = PowerPlays, y = PTS, color = Canadian))+
+  geom_jitter(width = 0.1, height = 0.1) +
+  geom_boxplot()
+```
+
+
+
+

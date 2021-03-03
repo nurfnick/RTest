@@ -51,6 +51,7 @@ test$expected
 ```{r}
 barplot(table(data$PowerPlays))
 ```
+
 ## Contingency Table Test
 
 ```{r}
