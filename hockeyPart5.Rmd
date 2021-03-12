@@ -1,0 +1,94 @@
+---
+title: "2021 Hockey Non-Parametric"
+author: "Nicholas Jacob"
+date: "3/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+data = read.csv('https://raw.githubusercontent.com/nurfnick/RTest/main/hockey.csv')
+```
+
+
+This is a continuation of this project <<https://rpubs.com/nurfnick/720194>
+
+# Ranks
+
+Most of these methods use ranks!  Let's go ahead and show the ranks!
+
+```{r cars}
+rank(data$PTS, ties.method = "average")
+```
+
+Some things to notice:
+
+1. **R** automatically did the average, the option **ties.method** is not required but can be changed.
+2.  The last score here is an **NA** BUT it returned as the highest ranked!  We'll need to fix that!
+
+```{r}
+rank(data$PTS, na.last = F)
+```
+
+I put the **NA** as the first (or lowest rank).  Notice though it does change all the ranks!
+
+# Wilcox Rank Sum
+
+## Fixed Value
+Let me do a test against a value first.  I am going to ask is the median number of games played 4.
+
+What was the median?
+```{r}
+median(data$GP, na.rm = TRUE)
+```
+Okay well this will at least be an interesting test then!
+
+```{r}
+wilcox.test(data$GP, mu = 4, na.rm = TRUE)
+```
+I do reject the null hypothesis!
+
+## Compare Two Medians
+
+I'll examine the variable describing if you are staying out of the penalty box or not
+
+This code has been used before.
+```{r}
+data$PTS[is.na(data$PTS)] <- 0
+data$PPO[is.na(data$PPO)] <- 0
+data$PPOA[is.na(data$PPOA)] <- 0
+data[which(data$PPO <= data$PPOA),"PowerPlays"] = "Less"
+data[which(data$PPO > data$PPOA),"PowerPlays"] = "More"
+```
+
+I went ahead and assigned the team with no games zero points too.
+
+
+Let's summarize the data we'll be comparing before we run the test
+```{r}
+by(data$PTS,data$PowerPlays, median)
+```
+
+```{r}
+table(data$PowerPlays)
+```
+
+Let's run the test!
+```{r}
+wilcox.test(PTS ~ PowerPlays, data = data)
+```
+
+We will fail to reject the null hypothesis.  Take as many penalties as you want!  This was the previous result too!
+
+# Wilcox Sign Test
+
+I need matched data!  I am actually going to look at the same idea PowerPlay Attempts vs Your Opponents but rather than set up a categorical variable, I'll compare those two values.  My assumption is that if you are a mean team, taking lots of penalties, your opponent will too.
+
+This is different from above!
+
+
+```{r}
+wilcox.test(data$PPO, data$PPOA, paired = TRUE)
+```
+
