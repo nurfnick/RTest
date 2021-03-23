@@ -12,7 +12,7 @@ data = read.csv('https://raw.githubusercontent.com/nurfnick/RTest/main/hockey.cs
 ```
 
 
-This is a continuation of this project <<https://rpubs.com/nurfnick/720194>
+This is a continuation of this project <https://rpubs.com/nurfnick/720194>
 
 # Ranks
 
@@ -48,6 +48,10 @@ Okay well this will at least be an interesting test then!
 wilcox.test(data$GP, mu = 4, na.rm = TRUE)
 ```
 I do reject the null hypothesis!
+```{r}
+ggplot(data, aes(GP))+
+  geom_boxplot()
+```
 
 ## Compare Two Medians
 
@@ -85,10 +89,42 @@ We will fail to reject the null hypothesis.  Take as many penalties as you want!
 
 I need matched data!  I am actually going to look at the same idea PowerPlay Attempts vs Your Opponents but rather than set up a categorical variable, I'll compare those two values.  My assumption is that if you are a mean team, taking lots of penalties, your opponent will too.
 
-This is different from above!
+This is different from above!  I could subtract the two columns or just add that they are paired.  I'll show that both are the same
 
 
 ```{r}
 wilcox.test(data$PPO, data$PPOA, paired = TRUE)
 ```
+```{r}
+wilcox.test(data$PPO - data$PPOA)
+```
+Easy enough!  We fail to reject the null hypothesis, there is not evidence to suggest that the number of powerplay opportunities and opponent opportunities are the same.
 
+# Kruskal-Wallis
+
+Just like the ANOVA, we need more than two categories to compare
+```{r}
+data$PPO[is.na(data$PPO)] <- 0
+data$PPOA[is.na(data$PPOA)] <- 0
+data[which(data$PPO < data$PPOA),"PowerPlays"] = "Less"
+data[which(data$PPO > data$PPOA),"PowerPlays"] = "More"
+data[which(data$PPO == data$PPOA),"PowerPlays"] = "Equal"
+```
+
+Looking at the median and seeing if the **PTS** stay the same
+
+```{r}
+model = kruskal.test(PTS ~ PowerPlays, data = data)
+model
+```
+
+We do not have evidence to suggest that the number of points depends on Having more or less powerplays.  We fail to reject the null hypothesis.
+
+# Spearman Rank Correlation
+
+I'll again look at Wins and Points.
+
+```{r}
+cor.test(data$W,data$PTS, method = "spearman")
+```
+There is a strong correlation!  We'll reject the null hypothesis that the spearman correlation is zero but we do not know if we have a linear relationship.
