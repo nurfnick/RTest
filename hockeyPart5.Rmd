@@ -117,8 +117,15 @@ Looking at the median and seeing if the **PTS** stay the same
 model = kruskal.test(PTS ~ PowerPlays, data = data)
 model
 ```
+```{r}
+ggplot(data, aes(PTS,PowerPlays))+
+  geom_boxplot()
+```
+```{r}
+table(data$PowerPlays)
+```
 
-We do not have evidence to suggest that the number of points depends on Having more or less powerplays.  We fail to reject the null hypothesis.
+We do not have evidence to suggest that the number of points depends on having more or less powerplays.  We fail to reject the null hypothesis.
 
 # Spearman Rank Correlation
 
@@ -127,4 +134,9 @@ I'll again look at Wins and Points.
 ```{r}
 cor.test(data$W,data$PTS, method = "spearman")
 ```
+```{r}
+ggplot(data,aes(W,PTS))+
+  geom_jitter()
+```
+
 There is a strong correlation!  We'll reject the null hypothesis that the spearman correlation is zero but we do not know if we have a linear relationship.

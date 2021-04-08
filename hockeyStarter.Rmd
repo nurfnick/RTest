@@ -82,4 +82,12 @@ t.test(lesspp$W,morepp$W)
 t.test(data$GP, mu = 4)
 ```
 
-The next part of the project can be found here <https://rpubs.com/nurfnick/720194>
+The entire project can be found at the following links.  Note the number corresponds to the part of the project.
+
+
+0. Hypothesis Testing <https://rpubs.com/nurfnick/715604>
+1. Regression <https://rpubs.com/nurfnick/720194>
+2. Bootstrapping and Cross Validation<https://rpubs.com/nurfnick/751598>
+3. Contingency Tables and Goodness of Fit <https://rpubs.com/nurfnick/730831>
+4. ANOVA <https://rpubs.com/nurfnick/733670>
+5. NonParametric <https://rpubs.com/nurfnick/743967>
